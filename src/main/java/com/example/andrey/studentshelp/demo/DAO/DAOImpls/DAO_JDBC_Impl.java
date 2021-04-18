@@ -28,11 +28,11 @@ public class DAO_JDBC_Impl implements UserDAO {
     Logger LOGGER = LoggerFactory.getLogger(DAO_JDBC_Impl.class);
 
    // @Value("${spring.datasource.url}")
-    private static final   String URL = "jdbc:postgresql://localhost:5432/student_help_service_db";
+    private static final   String URL = "postgres://vkdbawqjszsylz:8428711918d3d263b77a25e136ea0adeae0747b73bba420e919e16268c4aafb9@ec2-3-217-219-146.compute-1.amazonaws.com:5432/dckjbih0o1bg78";
     //@Value("${spring.datasource.username}")
-    private static final  String username = "postgres";
+    private static final  String username = "vkdbawqjszsylz";
    // @Value("${spring.datasource.password}")
-    private static final  String password = "6146534";
+    private static final  String password = "8428711918d3d263b77a25e136ea0adeae0747b73bba420e919e16268c4aafb9";
     //@Value("${spring.datasource.driver-class-name}")
     private static final String driver = "org.postgresql.Driver";
 
