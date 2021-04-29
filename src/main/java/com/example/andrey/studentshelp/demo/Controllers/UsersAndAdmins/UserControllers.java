@@ -1,4 +1,4 @@
-package com.example.andrey.studentshelp.demo.Controllers;
+package com.example.andrey.studentshelp.demo.Controllers.UsersAndAdmins;
 
 
 import com.example.andrey.studentshelp.demo.DTO.AuthResponse;
@@ -35,7 +35,8 @@ public class UserControllers {
 
     @PostMapping(value = "/userByLogAndPass")
     public ResponseEntity<User> findUserByLogAndPass(@RequestBody DTOUserToServer dtoUserToServer){
-        LOGGER.info("findUserByLogAndPass " + "Log: ," + dtoUserToServer.getLogin() + " Pass: " + dtoUserToServer.getPassword());
+        LOGGER.info("UserControllers: findUserByLogAndPass() method started with parameters: "  + dtoUserToServer.toString());
+
         final User userHelp = userService.getUserByLogAndPass(dtoUserToServer.getLogin(), dtoUserToServer.getPassword());
 
 
@@ -45,7 +46,7 @@ public class UserControllers {
     }
     @PostMapping(value = "/register")
     public ResponseEntity addUser(@RequestBody DTOAddNewUser user){
-
+        LOGGER.info("UserControllers: addUser() method started with parameters:  " + user.toString());
         User innerUser = new User();
 
         innerUser.setRole("ROLE_USER");
@@ -65,22 +66,18 @@ public class UserControllers {
     @PostMapping("/auth")
     public AuthResponse auth(@RequestBody DTOUserToServer dtoUserToServer){
 
+        LOGGER.info("UserControllers: auth() method started with parameters: "  + dtoUserToServer.toString());
         User user = userService.getUserByLogAndPass(dtoUserToServer.getLogin(),dtoUserToServer.getPassword());
+        LOGGER.info("auth: " + user.toString());
         if(user == null){
             LOGGER.error("Generate token exception");
             return new AuthResponse("error");
         }
         String token = jwtProvider.generateToken(user.getLogin());
+        LOGGER.info("token: " + token);
         return new AuthResponse(token);
     }
 
-    @GetMapping("/user")
-    public String user(){
-        return "This is user!!!";
-    }
 
-    @GetMapping("/admin")
-    public String admin(){
-        return "This is admin!!!";
-    }
+
 }

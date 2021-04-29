@@ -8,6 +8,8 @@ import com.example.andrey.studentshelp.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -21,6 +23,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByLogAndPass(String login, String password) {
         return userDAO.getUserByLogAndPas(login, password);
+    }
+
+    @Override
+    public ArrayList<User> getAllUsers() {
+        return userDAO.getAllUsers();
     }
 
     @Override

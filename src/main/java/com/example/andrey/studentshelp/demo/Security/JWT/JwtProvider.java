@@ -19,12 +19,15 @@ public class JwtProvider {
     private final  String jwtSecret = "secretformyapplication";
 
     public String generateToken(String login) {
+        LOGGER.info("JwtProvider: generateToken() method started with parameters: "  + login);
         Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        return Jwts.builder()
+        String a =  Jwts.builder()
                 .setSubject(login)
                 .setExpiration(date)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+        LOGGER.info(a);
+        return a;
     }
 
     public boolean validateToken(String token) {

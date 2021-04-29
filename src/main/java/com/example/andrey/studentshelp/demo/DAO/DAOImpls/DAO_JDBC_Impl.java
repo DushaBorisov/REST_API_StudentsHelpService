@@ -23,10 +23,7 @@ public class DAO_JDBC_Impl implements UserDAO {
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-//    @Autowired
-//    public DAO_JDBC_Impl(PasswordEncoder passwordEncoder){
-//        this.passwordEncoder = passwordEncoder;
-//    }
+
 
     Logger LOGGER = LoggerFactory.getLogger(DAO_JDBC_Impl.class);
 
@@ -58,44 +55,19 @@ public class DAO_JDBC_Impl implements UserDAO {
     public User getUserByLogAndPas(String login, String password) {
         User user = getUserByLogin(login);
         if(user != null){
-            if(passwordEncoder.matches(password, user.getPassword())) return user;
+            if(passwordEncoder.matches(password, user.getPassword())) {
+                LOGGER.info("DAO_JDBC_Impl: getUserByLogAndPas() method: password  match!!!");
+                return user;
+            }
                 else {
-                LOGGER.error("getUserByLogAndPas: password don't match!!!");
+                LOGGER.error("DAO_JDBC_Impl: getUserByLogAndPas() method: password don't match!!!");
                 return null;
             }
         }else{
-            LOGGER.error("getUserByLogAndPas: password don't match!!!");
+            LOGGER.error(" DAO_JDBC_Impl: getUserByLogAndPas() method: password don't match!!!");
             return null;
         }
-//        User user;
-//        try {
-//
-//            String sql= "SELECT * FROM users WHERE login = ? AND password = ?";
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setString(1,login);
-//            preparedStatement.setString(2,passwordEncoder.encode(password));
-//
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            if(resultSet.isBeforeFirst()) {
-//                LOGGER.info("success query: SELECT USER FROM users " + "Logg: " + login + "Pass: " + password);
-//                resultSet.next();
-//                user = new User();
-//                user.setName(resultSet.getString("name"));
-//                user.setSurname(resultSet.getString("surname"));
-//                user.setLogin(resultSet.getString("login"));
-//                user.setPassword(resultSet.getString("password"));
-//                user.setAge(resultSet.getInt("age"));
-//                user.setMoney(resultSet.getInt("money"));
-//                user.setRole(resultSet.getString("role"));
-//                return user;
-//            }else {
-//                LOGGER.error("Failed request: SELECT USER FROM users " + "Logg: " + login + "  Pass: " + password);
-//                return null;
-//            }
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//        return null;
+
     }
 
     @Override
@@ -109,7 +81,8 @@ public class DAO_JDBC_Impl implements UserDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.isBeforeFirst()) {
-                LOGGER.info("success query: SELECT USER FROM users " + "Logg: " + login );
+                LOGGER.info("DAO_JDBC_Impl: getUserByLogin()" +
+                        "success query: SELECT USER FROM users " + "Logg: " + login );
                 resultSet.next();
                 user = new User();
                 user.setName(resultSet.getString("name"));
@@ -121,12 +94,52 @@ public class DAO_JDBC_Impl implements UserDAO {
                 user.setRole(resultSet.getString("role"));
                 return user;
             }else {
-                LOGGER.error("Failed request: SELECT USER FROM users " + "Logg: ");
+                LOGGER.error("DAO_JDBC_Impl: getUserByLogin() method. Failed request: SELECT USER FROM users " + "Logg: ");
                 return null;
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public ArrayList<User> getAllUsers() {
+
+        String sql = "SELECT * FROM users";
+        User user;
+        ArrayList<User> ListOfUsers = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            if(resultSet.isBeforeFirst()) {
+                LOGGER.info("DAO_JDBC_Impl: getAllUsers() method. Success query: SELECT * FROM users ");
+                while (resultSet.next()){
+                    user = new User();
+
+                    user.setName(resultSet.getString("name"));
+                    user.setSurname(resultSet.getString("surname"));
+                    user.setLogin(resultSet.getString("login"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setAge(resultSet.getInt("age"));
+                    user.setMoney(resultSet.getInt("money"));
+                    user.setRole(resultSet.getString("role"));
+
+                    ListOfUsers.add(user);
+                }
+                return ListOfUsers;
+
+            }else {
+                LOGGER.error("DAO_JDBC_Impl: getAllUsers() method. Failed request: SELECT * FROM users ");
+                return null;
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
         return null;
     }
 
@@ -147,20 +160,21 @@ public class DAO_JDBC_Impl implements UserDAO {
                 preparedStatement.setString(7,user.getRole());
 
                 if (preparedStatement.executeUpdate() != 0) {
-                    LOGGER.info("User added!");
+                    LOGGER.info("DAO_JDBC_Impl: addUser() method. User added!!!");
                     return true;
-                }else LOGGER.error("User didn't add");
+                }else LOGGER.error("DAO_JDBC_Impl: addUser() method. User didn't add!!!");
             } catch (SQLException throwables) {
-                LOGGER.info("Error adding user!");
+                LOGGER.info("DAO_JDBC_Impl: addUser() method. Error adding user!!!");
                 throwables.printStackTrace();
                 return false;
             }
 
         }else{
-            LOGGER.error("The user with such data already exists!!!");
+            LOGGER.error("DAO_JDBC_Impl: addUser() method. The user with such data already exists!!!");
             return false;}
         return false;
     }
+
 
     @Override
     public boolean updateUser(User user) {
@@ -168,8 +182,5 @@ public class DAO_JDBC_Impl implements UserDAO {
         return true;
     }
 
-    @Override
-    public ArrayList<User> getAllusers() {
-        return null;
-    }
+
 }
