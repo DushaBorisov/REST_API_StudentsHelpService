@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://frontend-project-seven.vercel.app")
+                .allowedOrigins("http://localhost:7000")
                 .allowedMethods("*");
     }
 
