@@ -94,7 +94,7 @@ public class DAO_JDBC_Impl implements UserDAO {
                 user.setRole(resultSet.getString("role"));
                 return user;
             }else {
-                LOGGER.error("DAO_JDBC_Impl: getUserByLogin() method. Failed request: SELECT USER FROM users " + "Logg: ");
+                LOGGER.error("DAO_JDBC_Impl: getUserByLogin() method. Failed request: SELECT USER FROM users " + "Logg:  " + login);
                 return null;
             }
         } catch (SQLException throwables) {
@@ -180,6 +180,36 @@ public class DAO_JDBC_Impl implements UserDAO {
     public boolean updateUser(User user) {
 
         return true;
+    }
+
+    @Override
+    public boolean deleteUserByLogAndPass(String login, String password) {
+        User user;
+        if( (user = getUserByLogAndPas(login, password)) != null){
+
+
+            String sql = "DELETE FROM users WHERE login = ? AND password = ?";
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, login);
+                preparedStatement.setString(2, user.getPassword());
+
+                if (preparedStatement.executeUpdate() != 0) {
+                    LOGGER.info("DAO_JDBC_Impl: deleteUserByLogAndPass() method. User deleted!!!");
+                    return true;
+                }else LOGGER.error("DAO_JDBC_Impl: deleteUserByLogAndPass() method. User didn't delete!!!");
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }else{
+            LOGGER.error("DAO_JDBC_Impl: deleteUserByLogAndPass() method. The user with such data does not exists!!! ");
+
+            return false;
+        }
+        return false;
     }
 
 

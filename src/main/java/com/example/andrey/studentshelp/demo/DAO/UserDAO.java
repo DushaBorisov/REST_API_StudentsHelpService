@@ -13,5 +13,6 @@ public interface UserDAO {
     public ArrayList<User> getAllUsers();
     public boolean addUser(User user);
     public boolean updateUser(User user);
+    public boolean deleteUserByLogAndPass(String login, String password);
 
 }
