@@ -15,6 +15,7 @@ public interface UserService {
    public boolean addUser(User user);
    public boolean deleteUserByLogin(String login);
    public User GetUserByLogin(String login);
+   public boolean deleteUserByLogAndPass(String login, String password);
 
 
 }

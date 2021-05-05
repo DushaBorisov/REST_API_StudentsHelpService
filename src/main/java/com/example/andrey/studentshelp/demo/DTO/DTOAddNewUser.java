@@ -13,4 +13,5 @@ public class DTOAddNewUser {
     private String login;
     private String password;
     private int age;
+    private String email;
 }

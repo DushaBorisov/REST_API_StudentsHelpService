@@ -33,6 +33,12 @@ public class UserServiceImpl implements UserService {
     public User GetUserByLogin(String login){
         return userDAO.getUserByLogin(login);
     }
+
+    @Override
+    public boolean deleteUserByLogAndPass(String login, String password) {
+        return userDAO.deleteUserByLogAndPass(login,password);
+    }
+
     @Override
     public boolean addUser(User user) {
         return userDAO.addUser(user);

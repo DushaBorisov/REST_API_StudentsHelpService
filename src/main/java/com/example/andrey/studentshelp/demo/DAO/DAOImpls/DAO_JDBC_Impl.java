@@ -92,6 +92,7 @@ public class DAO_JDBC_Impl implements UserDAO {
                 user.setAge(resultSet.getInt("age"));
                 user.setMoney(resultSet.getInt("money"));
                 user.setRole(resultSet.getString("role"));
+                user.setEmail(resultSet.getString("email"));
                 return user;
             }else {
                 LOGGER.error("DAO_JDBC_Impl: getUserByLogin() method. Failed request: SELECT USER FROM users " + "Logg: ");
@@ -124,6 +125,7 @@ public class DAO_JDBC_Impl implements UserDAO {
                     user.setAge(resultSet.getInt("age"));
                     user.setMoney(resultSet.getInt("money"));
                     user.setRole(resultSet.getString("role"));
+                    user.setEmail(resultSet.getString("email"));
 
                     ListOfUsers.add(user);
                 }
@@ -147,7 +149,7 @@ public class DAO_JDBC_Impl implements UserDAO {
     public boolean addUser(User user) {
         if (getUserByLogAndPas(user.getLogin(), user.getPassword()) == null) {
 
-            String sql = "INSERT INTO users(name, surname, age, login, password, money,role) VALUES(?, ?, ?, ?, ?, ?,?)";
+            String sql = "INSERT INTO users(name, surname, age, login, password, money,role,email) VALUES(?, ?, ?, ?, ?, ?,?,?)";
             PreparedStatement preparedStatement = null;
             try {
                 preparedStatement = connection.prepareStatement(sql);
@@ -158,6 +160,7 @@ public class DAO_JDBC_Impl implements UserDAO {
                 preparedStatement.setString(5,passwordEncoder.encode(user.getPassword()));
                 preparedStatement.setInt(6, 0);
                 preparedStatement.setString(7,user.getRole());
+                preparedStatement.setString(8,user.getEmail());
 
                 if (preparedStatement.executeUpdate() != 0) {
                     LOGGER.info("DAO_JDBC_Impl: addUser() method. User added!!!");
@@ -199,6 +202,36 @@ public class DAO_JDBC_Impl implements UserDAO {
 
         }else{
             LOGGER.info("DAO_JDBC_Impl: deleteUserByLogin() method. User with such login not found!!!");
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteUserByLogAndPass(String login, String password) {
+        User user;
+        if( (user = getUserByLogAndPas(login, password)) != null){
+
+
+            String sql = "DELETE FROM users WHERE login = ? AND password = ?";
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, login);
+                preparedStatement.setString(2, user.getPassword());
+
+                if (preparedStatement.executeUpdate() != 0) {
+                    LOGGER.info("DAO_JDBC_Impl: deleteUserByLogAndPass() method. User deleted!!!");
+                    return true;
+                }else LOGGER.error("DAO_JDBC_Impl: deleteUserByLogAndPass() method. User didn't delete!!!");
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }else{
+            LOGGER.error("DAO_JDBC_Impl: deleteUserByLogAndPass() method. The user with such data does not exists!!! ");
+
             return false;
         }
         return false;
