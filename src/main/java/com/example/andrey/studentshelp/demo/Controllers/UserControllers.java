@@ -57,6 +57,7 @@ public class UserControllers {
         innerUser.setSurname(user.getSurname());
         innerUser.setAge(user.getAge());
         innerUser.setMoney(0);
+        innerUser.setEmail(user.getEmail());
 
 
 

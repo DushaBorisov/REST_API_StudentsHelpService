@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS users(
     email VARCHAR(50) NOT NULL
 );
 
+
+
 CREATE TABLE IF NOT EXISTS orders(
     order_id SERIAL PRIMARY KEY,
     customer_id INTEGER REFERENCES users(user_id) NOT NULL ,
@@ -18,7 +20,8 @@ CREATE TABLE IF NOT EXISTS orders(
     cost INTEGER NOT NULL ,
     date_order date NOT NULL ,
     date_execution date,
-    status INTEGER
+    status INTEGER,
+    subject VARCHAR(20)
 );
 
 CREATE TABLE IF NOT EXISTS picture_order(
@@ -27,3 +30,6 @@ CREATE TABLE IF NOT EXISTS picture_order(
     picture VARCHAR(500)
 );
 
+-- DROP TABLE IF EXISTS users;
+--DROP TABLE IF EXISTS orders;
+--DROP TABLE IF EXISTS picture_order;

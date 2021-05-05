@@ -3,6 +3,7 @@ package com.example.andrey.studentshelp.demo.Services.ServicesImpl;
 
 import com.example.andrey.studentshelp.demo.DAO.UserDAO;
 import com.example.andrey.studentshelp.demo.DTO.DTOAddNewUser;
+import com.example.andrey.studentshelp.demo.Email.SendEmailService;
 import com.example.andrey.studentshelp.demo.Services.UserService;
 import com.example.andrey.studentshelp.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,13 @@ import java.util.ArrayList;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private SendEmailService emailService;
     private UserDAO userDAO;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO) {
+    public UserServiceImpl(UserDAO userDAO, SendEmailService sendEmailService) {
         this.userDAO = userDAO;
+        this.emailService = sendEmailService;
     }
 
     @Override
@@ -41,7 +44,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) {
-        return userDAO.addUser(user);
+         if(userDAO.addUser(user)){
+            emailService.sendEmailAfterRegister(user);
+            return true;
+        }
+         return false;
     }
 
     @Override
