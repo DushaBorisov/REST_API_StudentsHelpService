@@ -19,6 +19,7 @@ public class JwtProvider {
     private final  String jwtSecret = "secretformyapplication";
 
     public String generateToken(String login) {
+
         Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
                 .setSubject(login)

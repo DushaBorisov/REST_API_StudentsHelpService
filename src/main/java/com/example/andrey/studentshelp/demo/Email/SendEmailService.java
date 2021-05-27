@@ -1,6 +1,5 @@
 package com.example.andrey.studentshelp.demo.Email;
 
-import com.example.andrey.studentshelp.demo.DAO.DAOImpls.DAO_JDBC_Impl;
 import com.example.andrey.studentshelp.demo.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

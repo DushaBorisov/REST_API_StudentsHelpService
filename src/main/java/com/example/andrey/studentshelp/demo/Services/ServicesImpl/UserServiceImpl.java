@@ -1,6 +1,7 @@
 package com.example.andrey.studentshelp.demo.Services.ServicesImpl;
 
 
+import com.example.andrey.studentshelp.demo.DAO.DAOImpls.UserDAO_JDBC_Impl;
 import com.example.andrey.studentshelp.demo.DAO.UserDAO;
 import com.example.andrey.studentshelp.demo.DTO.DTOAddNewUser;
 import com.example.andrey.studentshelp.demo.Email.SendEmailService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
         return userDAO.getUserByLogAndPas(login, password);
     }
     @Override
-    public ArrayList<User> getAllUsers() {
+    public List<User> getAllUsers() {
         return userDAO.getAllUsers();
     }
 
@@ -37,10 +39,7 @@ public class UserServiceImpl implements UserService {
         return userDAO.getUserByLogin(login);
     }
 
-    @Override
-    public boolean deleteUserByLogAndPass(String login, String password) {
-        return userDAO.deleteUserByLogAndPass(login,password);
-    }
+
 
     @Override
     public boolean addUser(User user) {

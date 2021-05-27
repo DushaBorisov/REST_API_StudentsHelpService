@@ -1,6 +1,6 @@
 package com.example.andrey.studentshelp.demo.Security.JWT;
 
-import com.example.andrey.studentshelp.demo.DAO.DAOImpls.DAO_JDBC_Impl;
+import com.example.andrey.studentshelp.demo.DAO.DAOImpls.UserDAO_JDBC_Impl;
 import com.example.andrey.studentshelp.demo.Security.CustomUserDetails;
 import com.example.andrey.studentshelp.demo.Security.CustomUserDetailsService;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import static org.springframework.util.StringUtils.hasText;
 @Component
 public class JWTFilter extends GenericFilterBean {
 
-    Logger LOGGER = LoggerFactory.getLogger(DAO_JDBC_Impl.class);
+    Logger LOGGER = LoggerFactory.getLogger(UserDAO_JDBC_Impl.class);
 
     public static final String AUTHORIZATION = "Authorization";
 

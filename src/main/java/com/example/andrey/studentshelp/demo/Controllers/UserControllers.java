@@ -70,11 +70,13 @@ public class UserControllers {
 
         LOGGER.info("UserControllers: auth() method started with parameters: "  + dtoUserToServer.toString());
         User user = userService.getUserByLogAndPass(dtoUserToServer.getLogin(),dtoUserToServer.getPassword());
+        LOGGER.info("UserControllers: auth() user from db: " + user.getLogin() );
         if(user == null){
             LOGGER.error(" UserControllers: auth(). Generate token exception");
             return new AuthResponse("error");
         }
         String token = jwtProvider.generateToken(user.getLogin());
+        LOGGER.info("UserControllers: auth(). New token: " + token);
         return new AuthResponse(token);
     }
 

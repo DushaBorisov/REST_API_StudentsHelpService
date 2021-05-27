@@ -1,10 +1,7 @@
 package com.example.andrey.studentshelp.demo.Security;
 
 
-import com.example.andrey.studentshelp.demo.DAO.DAOImpls.DAO_JDBC_Impl;
 import com.example.andrey.studentshelp.demo.Security.JWT.JWTFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .authorizeRequests()
                 .antMatchers("/admins/*").hasRole("ADMIN")
                 .antMatchers("/admins/**").hasRole("ADMIN")
-                .antMatchers("/users/user").hasRole("USER")
+                .antMatchers("/users/auth").permitAll()
+                .antMatchers("/users/*").hasAnyRole("USER","ADMIN")
+                .antMatchers("/users/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/users/register", "/auth").permitAll()
                 .antMatchers("/swagger-ui.html","/swagger-ui").permitAll()
                 .and()
